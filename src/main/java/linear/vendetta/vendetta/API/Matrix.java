@@ -4,6 +4,8 @@
  */
 package linear.vendetta.vendetta.API;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -58,6 +60,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     }
     
     public static Matrix multiply(Matrix M) {
+        
         return new Matrix(List.of(
                 new Vector(List.of(1, 0, 0)),
                 new Vector(List.of(0, 1, 0)),
@@ -105,20 +108,45 @@ public class Matrix implements operable<Matrix>, elementalOperations {
          
          return new Matrix(newValues);
     }
-
-    @Override
+    
+    @Override  
     public void rowMultiply(double a, int idx) {
-         
+        Vector oldVector = this.rows.get(idx);
+        Vector newVector = oldVector.scalarMult(a); 
+        this.rows.set(idx, newVector);
         this.determinant = determinant * a;
     }
 
     @Override
     public void rowSwap(int idx1, int idx2) {
+        Collections.swap(this.rows, idx1, idx2); //skeptical if it works but it
+        //should work
+        
         this.determinant = determinant * -1;
     }
 
     @Override
     public void rowComp(int idx1, int idx2, double k) {
         
+    }
+    
+    //Adding new method that allows dynamic creation of matrix no matter the size
+    public Matrix summonIdentity(int rowNum, int colNum) {
+        List<Vector> equations = new ArrayList<>();
+        for (int i = 0; i < rowNum; i++) {
+            List<Double> values = new ArrayList<>(); //for vector creation
+            values.clear(); //initialize for new row
+            for (int j = 0; j < colNum; j++) {
+                if (j == i) { //1,1 2,2 3,3 4,4 ... (leading 1 / pivot)
+                    values.add(1.0);
+                } else {
+                    values.add(0.0);
+                }
+            }
+            Vector temp = new Vector(values);
+            equations.add(temp);
+        }
+        
+        return new Matrix(equations);
     }
 }
