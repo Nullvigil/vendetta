@@ -85,6 +85,10 @@ public class Tokenizer {
     }
     
     private void validate(String str) throws CommandException {
+        if (str.isEmpty()) {
+            return;
+        }
+        
         if (reservedWords.contains(str)) {
             tokens.add(new Token(str, Token.TokenType.FUNCT));
         } else if (!reservedWords.contains(str) && str.matches("^[a-zA-Z]+$")) {
@@ -97,7 +101,7 @@ public class Tokenizer {
     }
     
     private void clear(StringBuilder str) {
-        str.delete(0, str.toString().length());
+        str.setLength(0);
     }
     
     public List<Token> getTokens() {
