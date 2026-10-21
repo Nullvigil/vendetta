@@ -4,10 +4,277 @@
  */
 package linear.vendetta.vendetta;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+
 /**
  *
  * @author Alex
  */
-public class Vector {
+public class Vector implements operable<Vector> {
+
+
+    /** The components of the vector in order: x, y, z, ... */
+    private List<Double> values;
+ 
+    /** How many components the vector has. Always equals values.size(). */
+    private int dimension;
+ 
+ 
     
+    /**
+     * Builds a vector from a known list of components.
+     * The list is COPIED, so changing the original list later will not
+     * secretly change this vector.
+     *
+     * @throws IllegalArgumentException if the list is null, empty,
+     * or contains a null entry
+     */
+    public <T extends Number> Vector(List<T> values) {
+        this.values = validatedCopy((List<Double>) values);
+        this.dimension = this.values.size();
+    }
+    
+    //By Ian,here is the constructor that generates a copy of the vector
+    public Vector(Vector v) {
+        this.values = v.getValues();
+        this.dimension = v.getDimension();
+    }    
+    
+    /**
+     * Builds a vector of the given size where every component is 0.0.
+     *
+     * @throws IllegalArgumentException if dimension is less than 1
+     */
+    public Vector(int dimension) {
+        if (dimension < 1) {
+            throw new IllegalArgumentException(
+                    "A vector needs a dimension of at least 1, but got " + dimension + ".");
+        }
+        this.values = new ArrayList<>(Collections.nCopies(dimension, 0.0));
+        this.dimension = dimension;
+    }
+
+
+    public int getDimension() {
+        return dimension;
+    }
+
+
+    public List<Double> getValues() {
+        return List.copyOf(values);
+    }
+ 
+    public void setValues(List<Double> newValues) {
+        this.dimension = this.values.size();
+        this.values = validatedCopy(newValues);
+    }
+ 
+    /** Gets one component. Index starts at 0. */
+    public double get(int index) {
+        Objects.checkIndex(index, dimension);
+        return values.get(index);
+    }
+ 
+    public void set(int index, double value) {
+        Objects.checkIndex(index, dimension);
+        values.set(index, value);
+    }
+ 
+    
+    @Override
+    public Vector scalarMult(double n) {
+        Vector v = new Vector(this);
+        
+        for (int i = 0; i < dimension; i++) {
+            v.values.set(i, values.get(i) * n);
+        }
+        
+        return v;
+    }
+ 
+    @Override
+    public Vector add(Vector a) {
+        validateDimensions(a);
+        
+        Vector sum = new Vector(this);
+        
+        for (int i = 0; i < dimension; i++) {
+            sum.values.set(i, sum.values.get(i) + a.values.get(i));
+        }
+        
+        return sum;
+    }
+ 
+    @Override
+    public Vector subtract(Vector a) {
+        return this.add(a.scalarMult(-1));
+    }
+ 
+    public double dotProduct(Vector a) {
+        validateDimensions(a);
+        double sum = 0.0;
+        for (int i = 0; i < dimension; i++) {
+            sum += values.get(i) * a.values.get(i);
+        }
+        return sum;
+    }
+    
+    public double cross2D(Vector v) {
+        requireBothDimension(v, 2);
+        return values.get(0) * v.values.get(1) - values.get(1) * v.values.get(0);
+    }
+    
+    
+    public Vector cross3D(Vector v) {
+        requireBothDimension(v, 3);
+ 
+        double a1 = values.get(0), a2 = values.get(1), a3 = values.get(2);
+        double b1 = v.values.get(0), b2 = v.values.get(1), b3 = v.values.get(2);
+ 
+        List<Double> result = List.of(
+                a2 * b3 - a3 * b2,
+                a3 * b1 - a1 * b3,
+                a1 * b2 - a2 * b1);
+        return new Vector(result); //DONT REMOVE CURLY THEY ARE FOR ABSTRACTS //VECTOR IS NOT ABSTRACT DUMBASS
+    }
+      
+    
+    
+    public Vector projectOn(Vector v) {
+        validateDimensions(v);
+ 
+        double vDotV = v.dotProduct(v);
+        if (vDotV == 0.0) {
+            throw new ArithmeticException("Cannot project onto the zero vector.");
+        }
+ 
+        double factor = this.dotProduct(v) / vDotV;
+        
+        //This logic makes sense, i will find bug later/a fix later
+        Vector result = new Vector(v);   // copy first so v itself is never called
+        result.scalarMult(factor);
+        return result;
+    }
+      
+      /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vector other)) return false;
+        if (this.dimension != other.dimension) return false;
+ 
+        for (int i = 0; i < dimension; i++) {
+            if (Double.compare(clean(values.get(i)), clean(other.values.get(i))) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    */
+      
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (double x : values) {
+            result = 31 * result + Double.hashCode(clean(x));
+        }
+        return result;
+    }
+    
+    /**
+     * Readable form for display, e.g. [1, 2.5, -3].
+     * Whole numbers lose the ".0" and long decimals are rounded to
+     * DISPLAY_DECIMALS places. This affects DISPLAY ONLY; the stored
+     * values keep full precision.
+     */
+    
+    //I deleted format number temporaly here for testing
+    @Override
+    public String toString() {
+        StringBuilder text = new StringBuilder("[");
+        for (int i = 0; i < dimension; i++) {
+            if (i > 0) text.append(", ");
+            text.append(values.get(i));
+        }
+        return text.append("]").toString();
+    }
+    
+    /**
+     * Checks that this vector and v have the same size before a two-vector
+     * operation (add, subtract, dotProduct, projectOn).
+     *
+     * @throws DimensionMismatchException if the sizes differ
+     */
+    private void validateDimensions(Vector v) {
+        Objects.requireNonNull(v, "The other vector cannot be null.");
+        if (this.dimension != v.dimension) {
+            throw new IllegalArgumentException(
+                    "Vectors must have the same dimension, but got "
+                            + this.dimension + " and " + v.dimension + ".");
+        }
+    }
+ /**
+     * exists because I was too lazy to write it twice
+     * @param v is the vector v
+     * @param required how many you need
+     */
+    private void requireBothDimension(Vector v, int required) {
+        Objects.requireNonNull(v, "The other vector cannot be null.");
+        if (this.dimension != required || v.dimension != required) {
+            throw new IllegalArgumentException(
+                    "This operation needs two " + required + "-dimensional vectors, but got "
+                            + this.dimension + " and " + v.dimension + ".");
+        }
+    }
+    
+    /**
+     * the method that will fix my TODO on how to check the validity of some 
+     * actions applied to vectors
+     * @param source the new component(S)
+     * @return the new List of values
+     */
+    private static List<Double> validatedCopy(List<Double> source) {
+        if (source == null || source.isEmpty()) {
+            throw new IllegalArgumentException("A vector needs at least one component.");
+        }
+        List<Double> copy = new ArrayList<>(source.size());
+        for (Double component : source) {
+            if (component == null) {
+                throw new IllegalArgumentException("A vector cannot contain null components.");
+            }
+            copy.add(component);
+        }
+        return copy;
+    }
+    
+    
+    /**
+     * Turns -0.0 into 0.0 (adding 0.0 does exactly that).
+     * Without this, [0] and [-0] (which appears after scalarMult(-1) on a zero)
+     * would count as different vectors.
+     */
+    private static double clean(double x) {
+        return x + 0.0;
+    }
+ 
+    
+    /** Formats one number for toString(): 3.0 -> "3", 2.50 -> "2.5", -0.00001 -> "0". */
+    /*
+    
+    private static String formatNumber(double x) {
+        if (Double.isNaN(x) || Double.isInfinite(x)) {
+            return String.valueOf(x);
+        }
+        // Locale.ROOT forces a "." decimal point even on a French (comma) computer.
+        String text = String.format(Locale.ROOT, "%." + DISPLAY_DECIMALS + "f", x);
+        if (text.contains(".")) {
+            text = text.replaceAll("0+$", "").replaceAll("\\.$", "");   // trim trailing zeros
+        }
+        return text.equals("-0") ? "0" : text;
+    }
+    */
 }
