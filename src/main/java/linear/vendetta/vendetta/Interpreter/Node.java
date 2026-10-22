@@ -4,10 +4,21 @@
  */
 package linear.vendetta.vendetta.Interpreter;
 
+import java.util.List;
+
 /**
  *
  * @author ian
  */
-public class Node {
-    
+
+public record Node(NodeKind kind, String text, List<Node> children) {
+
+    public enum NodeKind { 
+        NUMBER, NAME, CALL, BINARY, ASSIGN 
+    }
+
+    public Node {
+        children = List.copyOf(children); 
+    }
 }
+
