@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -28,10 +30,33 @@
             <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
          </padding>
          <children>
-            <VBox minWidth="380.0" prefHeight="200.0" prefWidth="420.0" spacing="16.0">
+            <VBox minWidth="380.0" prefHeight="200.0" prefWidth="420.0" spacing="16.0" styleClass="io-panel" HBox.hgrow="NEVER">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
+               <children>
+                  <Label styleClass="section-title" text="Operations" />
+                  <Label styleClass="muted-text" text="Enter your values and select an operation" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="8.0">
+                     <children>
+                        <Label text="Operation" />
+                        <ComboBox fx:id="operationComboBox" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="150.0" promptText="Select operation" styleClass="operation-selector" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="lab">
+                     <children>
+                        <Label text="Matrix A" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                           <children>
+                              <Label text="Rows" />
+                              <Spinner fx:id="rowsASpinner" prefWidth="85.0" />
+                              <Label text="Columns" />
+                              <Spinner fx:id="colsASpinner" prefWidth="85.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
             </VBox>
          </children>
       </HBox>
