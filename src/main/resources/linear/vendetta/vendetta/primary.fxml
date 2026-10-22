@@ -16,16 +16,19 @@
          </padding>
          <children>
             <Label fx:id="brandTitle" styleClass="brand-title" text="VENDETTA" />
-            <Label text="Linear Algebra Workbench" />
+            <Label fx:id="subtitleLabel" text="Linear Algebra Workbench" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Label text="JAVA 21" />
          </children>
       </HBox>
    </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="780.0" prefWidth="1400.0" spacing="16.0" BorderPane.alignment="TOP_LEFT">
+         <padding>
+            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+         </padding>
          <children>
-            <VBox prefHeight="380.0" prefWidth="420.0" spacing="16.0" styleClass="io-panel">
+            <VBox minWidth="380.0" prefHeight="200.0" prefWidth="420.0" spacing="16.0">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
