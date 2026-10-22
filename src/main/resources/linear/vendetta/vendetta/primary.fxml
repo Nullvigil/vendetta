@@ -116,7 +116,11 @@
                   </VBox>
                </children>
             </VBox>
-            <StackPane prefHeight="150.0" prefWidth="200.0" />
+            <StackPane fx:id="cartesianPane" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="400.0" prefHeight="700.0" prefWidth="900.0" styleClass="cartesian-pane" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="visualization-title" text="VECTOR VISUALIZATION" />
+               </children>
+            </StackPane>
          </children>
       </HBox>
    </center>
