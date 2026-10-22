@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 
@@ -94,8 +99,24 @@
                         </GridPane>
                      </children>
                   </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Scalar (k)" />
+                        <TextField fx:id="scalarField" maxWidth="1.7976931348623157E308" prefHeight="38.0" promptText="Enter scalar value" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="result-panel">
+                     <children>
+                        <Label text="Result" />
+                        <Separator prefWidth="200.0" />
+                        <TextArea fx:id="resultArea" editable="false" maxWidth="1.7976931348623157E308" prefHeight="130.0" prefRowCount="5" prefWidth="200.0" styleClass="result-area" wrapText="true" />
+                        <Button fx:id="solveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="44.0" text="Solve" />
+                        <Button fx:id="clearButton" mnemonicParsing="false" text="Clear" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
+            <StackPane prefHeight="150.0" prefWidth="200.0" />
          </children>
       </HBox>
    </center>
