@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Tokenizer {
     private String command;
-    private List<Token> tokens = new ArrayList();
+    private List<Token> tokens = new ArrayList<>();
     private List<String> reservedWords = List.of("Adj","Inv","Trans","Det","Dot", "Cross", "Project", "SolveSystem", "Vector", "Matrix");
     
      
@@ -71,11 +71,14 @@ public class Tokenizer {
                     tokens.add(new Token("*", Token.TokenType.STAR));
                     clear(current);
                 continue iteration;
-                case ' ':
-                    validate(current.toString());
-                    clear(current);
-                continue iteration;
+               
             }
+            
+            if (Character.isWhitespace(commandChars[i])) {
+                validate(current.toString());
+                clear(current);
+                continue iteration;
+            }    
             
             current.append(commandChars[i]);
         }
@@ -91,9 +94,9 @@ public class Tokenizer {
         
         if (reservedWords.contains(str)) {
             tokens.add(new Token(str, Token.TokenType.FUNCT));
-        } else if (!reservedWords.contains(str) && str.matches("^[a-zA-Z]+$")) {
+        } else if (str.matches("^[a-zA-Z][a-zA-Z0-9]*$")) {
             tokens.add(new Token(str, Token.TokenType.NAME));
-        } else if (str.matches("^-?\\d+(\\.\\d+)?$")) {
+        } else if (str.matches("^\\d+(\\.\\d+)?$")) {
             tokens.add(new Token(str, Token.TokenType.NUMBER));
         } else {
             throw new CommandException();
