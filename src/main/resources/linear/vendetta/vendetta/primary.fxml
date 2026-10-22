@@ -5,16 +5,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
 
 <BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="1100.0" prefHeight="900.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox prefHeight="70.0" prefWidth="200.0" spacing="12.0" styleClass="top-bar" BorderPane.alignment="CENTER_LEFT">
+      <HBox prefHeight="70.0" prefWidth="1440.0" spacing="12.0" styleClass="top-bar" BorderPane.alignment="CENTER_LEFT">
          <padding>
             <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
          </padding>
          <children>
-            <Label text="VENDETTA" />
+            <Label fx:id="brandTitle" styleClass="brand-title" text="VENDETTA" />
             <Label text="Linear Algebra Workbench" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Label text="JAVA 21" />
@@ -22,6 +23,14 @@
       </HBox>
    </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="380.0" prefWidth="420.0" spacing="16.0" styleClass="io-panel">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
    </center>
 </BorderPane>
