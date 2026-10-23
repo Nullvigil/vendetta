@@ -17,7 +17,7 @@ public class Token {
         this.tokenType = tokenType;
     }
     
-    public enum TokenType {
+    public static enum TokenType {
         NAME, NUMBER, PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, COMMA, EQUALS, FUNCT, END
     }
 }
