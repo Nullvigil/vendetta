@@ -1,0 +1,99 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 23 oct 2026, 3:15:01 p.m.
+    Author     : adria
+*/
+
+
+.root {
+    -fx-font-family: "System";
+    -fx-font-size: 14px;
+    -fx-background-color: #F8FAFC;
+}
+
+.top-bar {
+    -fx-background-color: #0B1220;
+}
+
+.brand-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.top-bar .label {
+    -fx-text-fill: #F8FAFC;
+}
+
+.io-panel {
+    -fx-background-color: #111827;
+}
+
+.io-panel .label {
+    -fx-text-fill: #E5E7EB;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.muted-text {
+    -fx-text-fill: #94A3B8;
+}
+
+.matrix-card {
+    -fx-background-color: #172033;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px;
+}
+
+.io-panel .text-field,
+.io-panel .combo-box,
+.io-panel .spinner {
+    -fx-background-color: #1F2937;
+    -fx-text-fill: #F9FAFB;
+    -fx-border-color: #374151;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+}
+
+.io-panel .text-field {
+    -fx-prompt-text-fill: #94A3B8;
+}
+
+.io-panel .button {
+    -fx-background-color: #3B82F6;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.io-panel .button:hover {
+    -fx-background-color: #2563EB;
+}
+
+.result-panel {
+    -fx-background-color: #172033;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px;
+}
+
+.result-area {
+    -fx-control-inner-background: #0F172A;
+    -fx-text-fill: #E2E8F0;
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+}
+
+.cartesian-pane {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
