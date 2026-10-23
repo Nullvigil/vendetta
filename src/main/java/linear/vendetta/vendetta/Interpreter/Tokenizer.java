@@ -5,7 +5,9 @@
 package linear.vendetta.vendetta.Interpreter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import linear.vendetta.vendetta.Interpreter.Token.TokenType;
 
 /**
  *
@@ -15,8 +17,20 @@ public class Tokenizer {
     private String command;
     private List<Token> tokens = new ArrayList<>();
     private static final List<String> reservedWords = List.of("Adj","Inv","Trans","Det","Dot", "Cross", "Project", "SolveSystem", "Vector", "Matrix");
-    
+    private static HashMap<Character, TokenType> tokenMapping = new HashMap();
      
+    
+    static {
+        tokenMapping.put(',', TokenType.COMMA);
+        tokenMapping.put('=', TokenType.EQUALS);
+        tokenMapping.put('(', TokenType.LPAREN);
+        tokenMapping.put('-', TokenType.MINUS);
+        tokenMapping.put('+', TokenType.PLUS);
+        tokenMapping.put(')', TokenType.RPAREN);
+        tokenMapping.put('/', TokenType.SLASH);
+        tokenMapping.put('*', TokenType.STAR);
+    }
+    
     public Tokenizer(String command) throws CommandException {
         this.command = command;
         
@@ -28,61 +42,18 @@ public class Tokenizer {
         char[] commandChars = command.toCharArray();
         
         
+        
+        
         for (int i = 0; i < command.length(); i++) {
+            char c = commandChars[i];
             
-            switch (commandChars[i]) {
-                case ',' -> {
-                    validate(current.toString());
-                    tokens.add(new Token(",", Token.TokenType.COMMA));
-                    clear(current);
-                    continue;
-                }
-                case '=' -> {
-                    validate(current.toString());
-                    tokens.add(new Token("=", Token.TokenType.EQUALS));
-                    clear(current);
-                    continue;
-                }
-                case '(' -> {
-                    validate(current.toString());
-                    tokens.add(new Token("(", Token.TokenType.LPAREN));
-                    clear(current);
-                    continue;
-                }
-                case '-' -> {
-                    validate(current.toString());
-                    tokens.add(new Token("-", Token.TokenType.MINUS));
-                    clear(current);
-                    continue;
-                }
-                case '+' -> {
-                    validate(current.toString());
-                    tokens.add(new Token("+", Token.TokenType.PLUS));
-                    clear(current);
-                    continue;
-                }
-                case ')' -> {
-                    validate(current.toString());
-                    tokens.add(new Token(")", Token.TokenType.RPAREN));
-                    clear(current);
-                    continue;
-                }
-                case '/' -> {
-                    validate(current.toString());
-                    tokens.add(new Token("/", Token.TokenType.SLASH));
-                    clear(current);
-                    continue;
-                }
-                case '*' -> {
-                    validate(current.toString());
-                    tokens.add(new Token("*", Token.TokenType.STAR));
-                    clear(current);
-                    continue;
-                }
-               
+            if (tokenMapping.containsKey(c)) {
+                validate(current.toString());
+                tokens.add(new Token(String.valueOf(c), tokenMapping.get(c)));
+                clear(current);
             }
             
-            if (Character.isWhitespace(commandChars[i])) {
+            if (Character.isWhitespace(c)) {
                 validate(current.toString());
                 clear(current);
                 continue;
