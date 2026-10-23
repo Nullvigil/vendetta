@@ -16,7 +16,9 @@ import linear.vendetta.vendetta.Interpreter.Token.TokenType;
 public class Tokenizer {
     private String command;
     private List<Token> tokens = new ArrayList<>();
-    private static final List<String> reservedWords = List.of("Adj","Inv","Trans","Det","Dot", "Cross", "Project", "SolveSystem", "Vector", "Matrix");
+    private static final List<String> reservedWords = List.of(
+            "Adj","Inv","Trans","Det","Dot", "Cross", "Project", "SolveSystem", "Vector", "Matrix"
+    );
     private static HashMap<Character, TokenType> tokenMapping = new HashMap();
      
     
@@ -51,6 +53,7 @@ public class Tokenizer {
                 validate(current.toString());
                 tokens.add(new Token(String.valueOf(c), tokenMapping.get(c)));
                 clear(current);
+                continue;
             }
             
             if (Character.isWhitespace(c)) {
