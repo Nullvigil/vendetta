@@ -4,6 +4,7 @@
  */
 package linear.vendetta.vendetta.Interpreter;
 
+import java.util.ArrayList;
 import java.util.List;
 import linear.vendetta.vendetta.Interpreter.Node.NodeKind;
 import linear.vendetta.vendetta.Interpreter.Token.TokenType;
@@ -54,19 +55,18 @@ public class Parser {
         if (t.tokenType == TokenType.NUMBER) {
             return new Node(NodeKind.NUMBER, t.oriText, List.of());
         }
-        
         if (t.tokenType == TokenType.NAME) {
             return new Node(NodeKind.NAME, t.oriText, List.of());
         }
-        
         if (t.tokenType == TokenType.LPAREN) {
-            Node inner = parseExpression();             
+            Node inner = parseExpression();            
             expect(TokenType.RPAREN, "Missing ')'");
-            return inner;                               
+            return inner;                              
         }
-        
         if (t.tokenType == TokenType.FUNCT) {
+            expect(TokenType.LPAREN, ("Expected '(' after " + t.oriText));
             
+            ArrayList<Node> functionArguments = new ArrayList();
         }
     }
     
@@ -75,11 +75,23 @@ public class Parser {
     }
     
     private Node parseExpression() {
-        
+        Node left = parseTerm();                        
+        while (peek().tokenType == TokenType.PLUS || peek().tokenType == TokenType.MINUS) {
+            String op = next().oriText;                 
+            Node right = parseTerm();                   
+            left = new Node(NodeKind.BINARY, op, List.of(left, right));
+        }
+        return left;
     }
 
     private Node parseTerm() {
-    
+        Node left = parseTerm();                        
+        while (peek().tokenType == TokenType.STAR || peek().tokenType == TokenType.SLASH) {
+            String op = next().oriText;                 
+            Node right = parseUnary();                   
+            left = new Node(NodeKind.BINARY, op, List.of(left, right));
+        }
+        return left;
     }
     
     private Node parseStatement() {
