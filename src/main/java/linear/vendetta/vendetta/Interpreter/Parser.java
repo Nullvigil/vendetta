@@ -63,11 +63,30 @@ public class Parser {
             expect(TokenType.RPAREN, "Missing ')'");
             return inner;                              
         }
+        
         if (t.tokenType == TokenType.FUNCT) {
-            expect(TokenType.LPAREN, ("Expected '(' after " + t.oriText));
-            
-            ArrayList<Node> functionArguments = new ArrayList();
+            expect(Token.TokenType.LPAREN, "Expected '(' after " + t.oriText);
+            ArrayList<Node> arguments = new ArrayList<>();
+
+            if (!peek().equals(TokenType.RPAREN)) {
+                arguments.add(parseExpression());
+            }
+
+            while(peek().equals(TokenType.COMMA)) {
+                next();
+                arguments.add(parseExpression());
+            }
+
+            expect(TokenType.RPAREN, "Missing ')'");
+
+            return new Node(NodeKind.CALL, t.oriText, arguments);
         }
+        
+        if (t.equals(TokenType.END)) {    
+            throw new CommandException("Unexpected end of command");
+        }    
+            
+        throw new CommandException("Unexpected '\" + t.oriText + \"'");    
     }
     
     private Node parseUnary() {
