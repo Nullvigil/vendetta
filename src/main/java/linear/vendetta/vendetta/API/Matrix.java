@@ -17,20 +17,13 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     private int[] size = new int[2];
     private double determinant;
 
-    
-    //TO DO: REVIEW CONSTRUCTOR BASE ON NEEDS
-    public Matrix(List<Vector> rows) {
+       
+     // Private: go through build()
+    private Matrix(List<Vector> rows) {
         this.rows = rows;
+        this.size[0] = rows.size();                  // number of rows
+        this.size[1] = vectorValues(rows.get(0)).size(); // number of columns
         calcDeterminant();
-    }
-    
-    public static Matrix transpose(Matrix M) {
-        //TO DO: CONTENT
-        return new Matrix(List.of(
-                new Vector(List.of(1, 0, 0)),
-                new Vector(List.of(0, 1, 0)),
-                new Vector(List.of(0, 0, 1))
-        ));
     }
     
     public static Matrix inverse() {
@@ -51,7 +44,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         determinant = 1; //TODO: COntent
     }
     
-    public static Matrix toTriangle() {
+    public static Matrix toTriangle() { //gaussian elim
         return new Matrix(List.of(
                 new Vector(List.of(1, 0, 0)),
                 new Vector(List.of(0, 1, 0)),
@@ -149,4 +142,47 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         
         return new Matrix(equations);
     }
+    
+ 
+    /**
+     * Matrix builder. Each Vector is one row; the size of its
+     * List<Integer> is the number of columns.
+     */
+    public static Matrix build(List<Vector> rows) {
+        return new Matrix(new ArrayList<>(rows)); // defensive copy of the list
+    }
+ 
+    // Single point of contact with your Vector class.
+    private static List<Double> vectorValues(Vector v) {
+        return v.getValues(); // <-- rename if your getter differs
+    }
+ 
+    // Getters
+  
+    public int getNumRows() { return size[0]; }
+ 
+    public int getNumCols() { return size[1]; }
+ 
+    public double get(int row, int col) { return vectorValues(rows.get(row)).get(col); }
+ 
+    /**
+     * Hey, @Matthew here, um see, I had a stroke of inspiration here and I am 
+     * semi-confident in how functional this code is. I actually drew up my 
+     * thoughts on paper for this one. I am too tired to test it out.
+     * @return the matrix that is now transposed
+     */
+    public Matrix transpose() {
+    List<Vector> transposed = new ArrayList<>();
+    for (int c = 0; c < size[1]; c++) {
+        List<Double> vals = new ArrayList<>();
+        for (int r = 0; r < size[0]; r++) {
+            vals.add(get(r, c));
+        }
+        transposed.add(new Vector(vals)); // assumes a Vector(List<Double>) constructor
+    }
+    return build(transposed);
 }
+    
+}
+ 
+
