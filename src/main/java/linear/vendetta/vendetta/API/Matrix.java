@@ -33,48 +33,37 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         return new Matrix(this.rows,404); //404 recognizable for not existing
         */
         
-        return new Matrix(List.of(
-            new Vector(List.of(1, 0, 0)),
-            new Vector(List.of(0, 1, 0)),
-            new Vector(List.of(0, 0, 1))
-        ));
+        List<Vector> equations = new ArrayList<>();
+        
+        return build(equations);
     }
     
     public void calcDeterminant() {
-        determinant = 1; //TODO: COntent
+        determinant = 1; //TODO: (Is objective for the short future)
     }
     
     public static Matrix toTriangle() { //gaussian elim
-        return new Matrix(List.of(
-                new Vector(List.of(1, 0, 0)),
-                new Vector(List.of(0, 1, 0)),
-                new Vector(List.of(0, 0, 1))
-        ));
+        List<Vector> equations = new ArrayList<>();
+        
+        return build(equations);
     }
     
     public static Matrix multiply(Matrix M) {
+        List<Vector> equations = new ArrayList<>();
         
-        return new Matrix(List.of(
-                new Vector(List.of(1, 0, 0)),
-                new Vector(List.of(0, 1, 0)),
-                new Vector(List.of(0, 0, 1))
-        ));
+        return build(equations);
     }
     
     public Matrix getSubMatrix(int i , int j) {
-        return new Matrix(List.of(
-                new Vector(List.of(1, 0, 0)),
-                new Vector(List.of(0, 1, 0)),
-                new Vector(List.of(0, 0, 1))
-        ));
+        List<Vector> equations = new ArrayList<>();
+        
+        return build(equations);
     }
     
     public static Matrix adj() {
-        return new Matrix(List.of(
-                new Vector(List.of(1, 0, 0)),
-                new Vector(List.of(0, 1, 0)),
-                new Vector(List.of(0, 0, 1))
-        ));
+        List<Vector> equations = new ArrayList<>();
+        
+        return build(equations);
     }
 
     @Override
@@ -146,7 +135,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
  
     /**
      * Matrix builder. Each Vector is one row; the size of its
-     * List<Integer> is the number of columns.
+     * List is the number of columns.
      */
     public static Matrix build(List<Vector> rows) {
         return new Matrix(new ArrayList<>(rows)); // defensive copy of the list
