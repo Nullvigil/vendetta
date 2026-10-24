@@ -8,7 +8,7 @@ package linear.vendetta.vendetta.Interpreter;
  *
  * @author ian
  */
-public class CommandException extends Exception {
+public class CommandException extends RuntimeException {
 
     /**
      * Creates a new instance of <code>CommandException</code> without detail
