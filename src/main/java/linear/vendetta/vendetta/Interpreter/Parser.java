@@ -5,6 +5,7 @@
 package linear.vendetta.vendetta.Interpreter;
 
 import java.util.List;
+import linear.vendetta.vendetta.Interpreter.Node.NodeKind;
 import linear.vendetta.vendetta.Interpreter.Token.TokenType;
 
 /**
@@ -48,7 +49,25 @@ public class Parser {
     
     
     private Node parseFactor() {
+        Token t = next();
+
+        if (t.tokenType == TokenType.NUMBER) {
+            return new Node(NodeKind.NUMBER, t.oriText, List.of());
+        }
         
+        if (t.tokenType == TokenType.NAME) {
+            return new Node(NodeKind.NAME, t.oriText, List.of());
+        }
+        
+        if (t.tokenType == TokenType.LPAREN) {
+            Node inner = parseExpression();             
+            expect(TokenType.RPAREN, "Missing ')'");
+            return inner;                               
+        }
+        
+        if (t.tokenType == TokenType.FUNCT) {
+            
+        }
     }
     
     private Node parseUnary() {
