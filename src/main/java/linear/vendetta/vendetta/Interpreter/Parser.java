@@ -68,11 +68,11 @@ public class Parser {
             expect(Token.TokenType.LPAREN, "Expected '(' after " + t.oriText);
             ArrayList<Node> arguments = new ArrayList<>();
 
-            if (!peek().equals(TokenType.RPAREN)) {
+            if (peek().tokenType != TokenType.RPAREN) {
                 arguments.add(parseExpression());
             }
 
-            while(peek().equals(TokenType.COMMA)) {
+            while (peek().tokenType == TokenType.COMMA) {
                 next();
                 arguments.add(parseExpression());
             }
@@ -82,11 +82,11 @@ public class Parser {
             return new Node(NodeKind.CALL, t.oriText, arguments);
         }
         
-        if (t.equals(TokenType.END)) {    
+        if (t.tokenType == TokenType.END) {
             throw new CommandException("Unexpected end of command");
         }    
             
-        throw new CommandException("Unexpected '\" + t.oriText + \"'");    
+        throw new CommandException("Unexpected '" + t.oriText + "'");    
     }
     
     private Node parseUnary() {
@@ -125,6 +125,14 @@ public class Parser {
     }
     
     private Node parseStatement() {
+        if ((pos + 1 < tokens.size()) && tokens.get(pos).tokenType.equals(TokenType.NAME) && tokens.get(pos + 1).tokenType.equals(TokenType.EQUALS)) {
+            String name = next().oriText;
+            next();
+            Node valor = parseExpression();
+            
+            return new Node(NodeKind.ASSIGN, name, List.of(valor));
+        }
         
+        return parseExpression();
     }
 }
