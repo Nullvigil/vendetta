@@ -71,7 +71,18 @@ public class Parser {
     }
     
     private Node parseUnary() {
+        if (peek().tokenType == TokenType.MINUS) {
+            next();                                    
+            Node operand = parseUnary();                
+
+            if (operand.kind() == NodeKind.NUMBER) {
+                return new Node(NodeKind.NUMBER, String.valueOf(-Double.parseDouble(operand.text())), List.of());
+            }
+            
+            return new Node(NodeKind.BINARY, "*", List.of(new Node(NodeKind.BINARY, "-1", List.of()), operand));
+        }
         
+        return parseFactor();
     }
     
     private Node parseExpression() {
