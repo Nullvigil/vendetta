@@ -33,18 +33,15 @@ public class Tokenizer {
         tokenMapping.put('*', TokenType.STAR);
     }
     
-    public Tokenizer(String command) throws CommandException {
+    public Tokenizer(String command) {
         this.command = command;
         
         tokenize();
     }
     
-    private void tokenize() throws CommandException {
+    private void tokenize() {
         StringBuilder current = new StringBuilder();
         char[] commandChars = command.toCharArray();
-        
-        
-        
         
         for (int i = 0; i < command.length(); i++) {
             char c = commandChars[i];
@@ -69,7 +66,7 @@ public class Tokenizer {
         tokens.add(new Token("", Token.TokenType.END));
     }
     
-    private void validate(String str) throws CommandException {
+    private void validate(String str) {
         if (str.isEmpty()) {
             return;
         }
