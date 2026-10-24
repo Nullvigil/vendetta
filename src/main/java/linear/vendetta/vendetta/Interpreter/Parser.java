@@ -79,7 +79,7 @@ public class Parser {
                 return new Node(NodeKind.NUMBER, String.valueOf(-Double.parseDouble(operand.text())), List.of());
             }
             
-            return new Node(NodeKind.BINARY, "*", List.of(new Node(NodeKind.BINARY, "-1", List.of()), operand));
+            return new Node(NodeKind.BINARY, "*", List.of(new Node(NodeKind.NUMBER, "-1", List.of()), operand));
         }
         
         return parseFactor();
@@ -96,7 +96,7 @@ public class Parser {
     }
 
     private Node parseTerm() {
-        Node left = parseTerm();                        
+        Node left = parseUnary();                        
         while (peek().tokenType == TokenType.STAR || peek().tokenType == TokenType.SLASH) {
             String op = next().oriText;                 
             Node right = parseUnary();                   
