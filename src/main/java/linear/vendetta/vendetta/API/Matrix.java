@@ -41,13 +41,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     public void calcDeterminant() {
         determinant = 1; //TODO: (Is objective for the short future)
     }
-    
-    public static Matrix toTriangle() { //gaussian elim
-        List<Vector> equations = new ArrayList<>();
-        
-        return build(equations);
-    }
-    
+
     public static Matrix multiply(Matrix M) {
         List<Vector> equations = new ArrayList<>();
         
@@ -109,7 +103,15 @@ public class Matrix implements operable<Matrix>, elementalOperations {
 
     @Override
     public void rowComp(int idx1, int idx2, double k) {
+        List<Double> target = vectorValues(this.rows.get(idx1));
+        List<Double> source = vectorValues(this.rows.get(idx2));
         
+        List<Double> combined = new ArrayList<>();
+        for (int c = 0; c < size[1]; c++) {
+            combined.add(target.get(c) + k * source.get(c));
+        }
+        
+        this.rows.set(idx1, new Vector(combined));
     }
     
     //Adding new method that allows dynamic creation of matrix no matter the size
@@ -171,7 +173,68 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     }
     return build(transposed);
 }
-    
-}
+        
+    public Matrix toTriangle() { //gaussian elim (had to remove static to read
+        //the rows
+        int m = size[0];
+        int n = size[1];
+        // Work on a plain array copy so the original matrix isn't touched.
+        double[][] a = new double[m][n];
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                a[r][c] = get(r, c);
+            }
+        }
+        int pivotRow = 0;
+        for (int col = 0; col < n && pivotRow < m; col++) {
  
-
+            // Partial pivoting: pick the largest value in this column 
+            //(at or below pivotRow).
+            int best = pivotRow;
+            for (int r = pivotRow + 1; r < m; r++) {
+                if (Math.abs(a[r][col]) > Math.abs(a[best][col])) {
+                    best = r;
+                }
+            }
+ 
+            // No usable pivot in this column, move on to the next column.
+            if (Math.abs(a[best][col]) < 0.00001) {
+                continue;
+            }
+ 
+            // Swap the best row into the pivot position.
+            double[] temp = a[pivotRow];
+            a[pivotRow] = a[best];
+            a[best] = temp;
+ 
+            // Zero out everything below the pivot.
+            for (int r = pivotRow + 1; r < m; r++) {
+                double factor = a[r][col] / a[pivotRow][col];
+                a[r][col] = 0.0;
+                for (int c = col + 1; c < n; c++) {
+                    a[r][c] -= factor * a[pivotRow][c];
+                }
+            }
+            pivotRow++;
+        }
+ 
+        return fromArray(a);
+    }
+ 
+    // Helper: turns a double[][] back into a Matrix using the builder.
+    //I really just added it because I'll probably need it later -Matthew
+    private static Matrix fromArray(double[][] a) {
+        List<Vector> result = new ArrayList<>();
+        for (double[] rowData : a) {
+            List<Double> vals = new ArrayList<>();
+            for (double v : rowData) {
+                vals.add(v);
+            }
+            result.add(new Vector(vals)); // assumes a Vector(List<Double>) constructor
+        }
+        return build(result);
+    }
+    
+    
+ 
+}
