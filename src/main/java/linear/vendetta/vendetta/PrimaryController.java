@@ -24,10 +24,10 @@ public class PrimaryController {
     private Button clearButton;
 
     @FXML
-    private Spinner<?> colsASpinner;
+    private Spinner<Integer> colsASpinner;
 
     @FXML
-    private Spinner<?> colsBSpinner;
+    private Spinner<Integer> colsBSpinner;
 
     @FXML
     private GridPane matrixAContainer;
@@ -36,7 +36,7 @@ public class PrimaryController {
     private GridPane matrixBContainer;
 
     @FXML
-    private ComboBox<?> operationComboBox;
+    private ComboBox<String> operationComboBox;
 
     @FXML
     private TextArea resultArea;
@@ -45,10 +45,10 @@ public class PrimaryController {
     private BorderPane rootPane;
 
     @FXML
-    private Spinner<?> rowsASpinner;
+    private Spinner<Integer> rowsASpinner;
 
     @FXML
-    private Spinner<?> rowsBSpinner;
+    private Spinner<Integer> rowsBSpinner;
 
     @FXML
     private TextField scalarField;
@@ -58,6 +58,36 @@ public class PrimaryController {
 
     @FXML
     private Label subtitleLabel;
+    
+    @FXML
+    public void intialize() {
+        operationComboBox.getItems().setAll(
+            "Addition",
+            "Subtraction",
+            "Scalar Multiplication",
+            "Transpose",
+            "Determinant",
+            "Inverse",
+            "Matrix Multiplication",
+            "Dot Product",
+            "Cross Product",
+            "Projection"
+        );
+
+        operationComboBox.getSelectionModel().selectFirst();
+    }
+    
+    @FXML
+    public void clearButtonPressed() {
+        clearTextFields(matrixAContainer);
+        clearTextFields(matrixBContainer);
+        
+        scalarField.clear();
+        resultArea.clear();
+        
+        resultArea.setPromptText("Enter your values and select an operation");
+    }
+    
     
     
 }
