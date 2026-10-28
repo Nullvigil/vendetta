@@ -97,4 +97,18 @@ public class PrimaryController {
           .forEach(TextField::clear);
     }
     
+    @FXML
+    private void solveButtonPressed() {
+        String operation = operationComboBox.getSelectionModel().getSelectedItem();
+
+        if (operation == null) {
+            resultArea.setText("Please select an operation.");
+            return;
+        }
+
+        resultArea.setText(
+            "Selected operation: " + operation
+            + "\n\nThe input will be validated before calculation."
+        );
+    }
 }
