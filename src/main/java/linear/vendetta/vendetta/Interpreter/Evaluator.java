@@ -30,6 +30,7 @@ public class Evaluator {
                 case NodeKind.NUMBER -> Double.parseDouble(node.text());                
             };
         }    
+        return null;
     }
     
     private static Object assign(Node node) {
@@ -43,8 +44,58 @@ public class Evaluator {
             case "-" -> sub(node.children());
             case "*" -> times(node.children());
             case "/" -> div(node.children());    
-        }
+            default -> throw new IllegalStateException("Unexpected value: " + (node.text()));
+        };
     }
+    //"Adj","Inv","Trans","Det","Dot", "Cross", "Project", "SolveSystem", "Vector", "Matrix"
+    private static Object call(Node node) {
+        return switch(node.text()) {
+            case "adj" -> sum(node.children());
+            case "inv" -> sub(node.children());
+            case "trans" -> times(node.children());
+            case "det" -> div(node.children());
+            case "project" -> sum(node.children());
+            case "solveSystem" -> sub(node.children());
+            case "Vector" -> times(node.children());
+            case "Matrix" -> div(node.children());    
+                
+            default -> throw new IllegalStateException("Unexpected value: " + (node.text()));
+        };
+    }    
+    
+    private static Object adj(List<Node> arg) {
+    
+    }
+    
+    private static Object inv(List<Node> arg) {
+    
+    }
+
+    private static Object trans(List<Node> arg) {
+    
+    }
+    
+    private static Object det(List<Node> arg) {
+    
+    }
+    
+    private static Object project(List<Node> arg) {
+    
+    }
+    
+    private static Object solveSystem(List<Node> arg) {
+    
+    }
+    
+    private static Object Vector(List<Node> arg) {
+    
+    }
+    
+    private static Object Matrix(List<Node> arg) {
+    
+    }
+    
+    
     
     private static Object sum(List<Node> nodes) {
         
@@ -62,7 +113,5 @@ public class Evaluator {
         
     }
 
-    private static Object call(Node node) {
     
-    }    
 }
