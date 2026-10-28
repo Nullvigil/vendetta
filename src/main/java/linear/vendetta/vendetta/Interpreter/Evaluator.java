@@ -14,64 +14,55 @@ import linear.vendetta.vendetta.Interpreter.Node.NodeKind;
  * @author ian
  */
 public class Evaluator {
-    private Node root;
-    private HashMap<String, Object> memory = new HashMap();
+    private static HashMap<String, Object> memory = Interpreter.getMemory();
     
-    public Evaluator(Node root, HashMap<String, Object> memory) {
-        this.root = root;
-        this.memory = memory;
-    }
-    
-    Object evaluateNode(List<Node> root) {
+    public static Object evaluateNode(List<Node> root) {
         for (Node node: root) {
-            switch (node.kind()) {
-                case NodeKind.ASSIGN:
-                    memory.put(node.text(), evaluateNode(node.children()));
-                break;
+            return switch (node.kind()) {
+                case NodeKind.ASSIGN -> assign(node);
                 
-                case NodeKind.BINARY:
+                case NodeKind.BINARY -> bin(node);
+                
+                case NodeKind.CALL -> call(node);
+                
+                case NodeKind.NAME -> memory.containsKey(node.text()) ? memory.get(root.text()) : throw new CommandException(String.format("%s is used but never initialized!", node.text()));  
                     
-                break;
-                
-                case NodeKind.CALL:
-                    switch(node.text()) {
-                        case 
-                    }
-                break;
-                
-                case NodeKind.NAME:
-                    if (!memory.containsKey(node.text())) {
-                        throw new CommandException(String.format("%s is used but never initialized!", node.text()));
-                    }
-                    
-                    return memory.get(node.text());
-                
-                case NodeKind.NUMBER: return Double.parseDouble(node.text());
-                
-            }
-
-        }    
-    }
-    
-    private Node evaluateBin(Node node) {
-        return switch(node.text()) {
-            case "+" ->  {
-                sum(node.children());
+                case NodeKind.NUMBER -> Double.parseDouble(node.text());                
             };
-            case "-" -> ;
-            case "/" -> ;
-            case "*" -> ;    
-        }
-    } 
-    
-    private Object sum(List<Object> os) {
-        if (os.get(0).getClass() != os.get(1).getClass()) {
-            throw new CommandException("Invalid sum");
-        }
-        
-        
-        return switch(os.get(0).getClass()) {
-            case Vector -> os.get(0).add(os.get(1));
         }    
     }
+    
+    private static Object assign(Node node) {
+        Interpreter.assignToMemory(node.text(), evaluateNode(node.children()));
+        return evaluateNode(node.children());
+    }
+
+    private static Object bin(Node node) {
+        return switch(node.text()) {
+            case "+" -> sum(node.children());
+            case "-" -> sub(node.children());
+            case "*" -> times(node.children());
+            case "/" -> div(node.children());    
+        }
+    }
+    
+    private static Object sum(List<Node> nodes) {
+        
+    }
+    
+    private static Object sub(List<Node> nodes) {
+        
+    }
+    
+    private static Object times(List<Node> nodes) {
+        
+    }
+    
+    private static Object div(List<Node> nodes) {
+        
+    }
+
+    private static Object call(Node node) {
+    
+    }    
 }
