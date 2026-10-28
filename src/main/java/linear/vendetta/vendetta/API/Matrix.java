@@ -7,6 +7,8 @@ package linear.vendetta.vendetta.API;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  *
@@ -16,6 +18,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     private List<Vector> rows;
     private int[] size = new int[2];
     private double determinant;
+    private double detSign;
 
        
      // Private: go through build()
@@ -23,7 +26,9 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         this.rows = rows;
         this.size[0] = rows.size();                  // number of rows
         this.size[1] = vectorValues(rows.get(0)).size(); // number of columns
-        calcDeterminant();
+        if (rows.size() != vectorValues(rows.get(0)).size()) {
+            calcDeterminant();
+        }
     }
     
     public static Matrix inverse() {
@@ -38,8 +43,25 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         return build(equations);
     }
     
-    public void calcDeterminant() {
-        determinant = 1; //TODO: (Is objective for the short future)
+    public void calcDeterminant() { 
+        if (rows.size() != vectorValues(rows.get(0)).size()) {
+            Alert alert = new Alert(AlertType.WARNING);alert.setTitle("Alert Box");
+            alert.setHeaderText("INVALID SIZE");
+            alert.setContentText("Your matrix must be a square matrix");
+            alert.showAndWait();            
+        }
+        toTriangle();
+        double total = 0;
+        for (int i = 0; i < rows.size(); i++) {
+            Vector vector = rows.get(i);
+            List<Double> vals = vector.getValues();
+            if (i == 1) {
+                total += vals.get(i);
+            } else {
+                total *= vals.get(i);
+            }
+        }
+        determinant = total * detSign; //detSign is for changes done in toTraingle()
     }
 
     public static Matrix multiply(Matrix M) {
@@ -81,7 +103,6 @@ public class Matrix implements operable<Matrix>, elementalOperations {
          for (int i = 0; i < newValues.size(); i++) {
              newValues.get(i).scalarMult(k);
          }
-         
          return new Matrix(newValues);
     }
     
@@ -156,6 +177,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
  
     public double get(int row, int col) { return vectorValues(rows.get(row)).get(col); }
  
+ 
     /**
      * Hey, @Matthew here, um see, I had a stroke of inspiration here and I am 
      * semi-confident in how functional this code is. I actually drew up my 
@@ -176,50 +198,53 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         
     public Matrix toTriangle() { //gaussian elim (had to remove static to read
         //the rows
-        int m = size[0];
-        int n = size[1];
-        // Work on a plain array copy so the original matrix isn't touched.
-        double[][] a = new double[m][n];
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
-                a[r][c] = get(r, c);
+         int m = size[0];
+    int n = size[1];
+    double[][] a = new double[m][n];
+    for (int r = 0; r < m; r++) {
+        for (int c = 0; c < n; c++) {
+            a[r][c] = get(r, c);
+        }
+    }
+
+    // Determinant tracker: each row swap multiplies the determinant by -1.
+    detSign = 1.0;
+
+    int pivotRow = 0;
+    for (int col = 0; col < n && pivotRow < m; col++) {
+
+        int best = pivotRow;
+        for (int r = pivotRow + 1; r < m; r++) {
+            if (Math.abs(a[r][col]) > Math.abs(a[best][col])) {
+                best = r;
             }
         }
-        int pivotRow = 0;
-        for (int col = 0; col < n && pivotRow < m; col++) {
- 
-            // Partial pivoting: pick the largest value in this column 
-            //(at or below pivotRow).
-            int best = pivotRow;
-            for (int r = pivotRow + 1; r < m; r++) {
-                if (Math.abs(a[r][col]) > Math.abs(a[best][col])) {
-                    best = r;
-                }
-            }
- 
-            // No usable pivot in this column, move on to the next column.
-            if (Math.abs(a[best][col]) < 0.00001) {
-                continue;
-            }
- 
-            // Swap the best row into the pivot position.
+
+        // No usable pivot if that small, move onto next pivot
+        if (Math.abs(a[best][col]) < 0.00001) {
+            continue;
+        }
+
+        // Swap the best row into the pivot position (only counts if rows differ).
+        if (best != pivotRow) {
             double[] temp = a[pivotRow];
             a[pivotRow] = a[best];
             a[best] = temp;
- 
-            // Zero out everything below the pivot.
-            for (int r = pivotRow + 1; r < m; r++) {
-                double factor = a[r][col] / a[pivotRow][col];
-                a[r][col] = 0.0;
-                for (int c = col + 1; c < n; c++) {
-                    a[r][c] -= factor * a[pivotRow][c];
-                }
-            }
-            pivotRow++;
+            detSign *= -1.0;
         }
- 
-        return fromArray(a);
+
+        for (int r = pivotRow + 1; r < m; r++) {
+            double factor = a[r][col] / a[pivotRow][col];
+            a[r][col] = 0.0;
+            for (int c = col + 1; c < n; c++) {
+                a[r][c] -= factor * a[pivotRow][c];
+            }
+        }
+        pivotRow++;
     }
+
+    return fromArray(a);
+}
  
     // Helper: turns a double[][] back into a Matrix using the builder.
     //I really just added it because I'll probably need it later -Matthew
