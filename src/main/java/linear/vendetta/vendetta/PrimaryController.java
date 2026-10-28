@@ -2,6 +2,7 @@ package linear.vendetta.vendetta;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import linear.vendetta.vendetta.Interpreter.Node;
 
 public class PrimaryController {
 
@@ -88,6 +90,11 @@ public class PrimaryController {
         resultArea.setPromptText("Enter your values and select an operation");
     }
     
-    
+    private void clearTextFields(Parent parent) {
+    parent.lookupAll(".text-field").stream()
+          .filter(node -> node instanceof TextField)
+          .map(node -> (TextField) node)
+          .forEach(TextField::clear);
+    }
     
 }
