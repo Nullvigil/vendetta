@@ -167,19 +167,48 @@ public class Evaluator {
     }
     
     private static Object project(List<Object> args) {
+        if (args.get(0) instanceof Vector v1 && args.get(0) instanceof Vector v2) {
+            if (args.size() != 2) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+            return v1.projectOn(v2);
+        }
         
+        throw new CommandException("Invalid argument for function");
     }
     
     private static Object solveSystem(List<Object> args) {
-    
+        //to be done
+        return new Vector(List.of(1, 2, 3));
     }
     
     private static Object vector(List<Object> args) {
-    
+        if (args.size() != 1)  {
+            throw new CommandException("Invalid argument, amount not compatible");
+        }
+        
+        if (args.get(0) instanceof Integer n) {
+            return new Vector(n);
+        } else if (args.get(0) instanceof Vector v) {
+            return new Vector(v);
+        }
+        
+        throw new CommandException("Invalid argument for function");
     }
     
     private static Object matrix(List<Object> args) {
-    
+        if (args.size() > 2 && args.size() < 1)  {
+            throw new CommandException("Invalid argument, amount not compatible");
+        }
+        
+        if (args.get(0) instanceof Integer n && args.get(1) instanceof Integer m) {
+            return new Matrix(n, m);
+        } else if (args.get(0) instanceof Matrix m) {
+            return new Matrix(m);
+        }
+        
+        throw new CommandException("Invalid argument for function");
     }
     
     
