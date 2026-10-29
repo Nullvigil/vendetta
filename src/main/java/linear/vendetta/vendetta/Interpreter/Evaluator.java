@@ -93,6 +93,7 @@ public class Evaluator {
                 throw new CommandException("Invalid argument, amount not compatible");
             }
             
+            return Matrix.adj(m);
         }
         
         throw new CommandException("Invalid argument for function");
@@ -135,7 +136,7 @@ public class Evaluator {
     }
     
     private static Object dot(List<Object> args) {
-        if (args.get(0) instanceof Vector v1 && args.get(0) instanceof Vector v2) {
+        if (args.get(0) instanceof Vector v1 && args.get(1) instanceof Vector v2) {
             if (args.size() != 2) {
                 throw new CommandException("Invalid argument, amount not compatible");
             }
@@ -147,16 +148,16 @@ public class Evaluator {
     }
     
     private static Object cross(List<Object> args) {
-        if (args.get(0) instanceof Vector v1 && args.get(0) instanceof Vector v2) {
+        if (args.get(0) instanceof Vector v1 && args.get(1) instanceof Vector v2) {
             if (args.size() != 2) {
                 throw new CommandException("Invalid argument, amount not compatible");
             }
             
-            if (v1.getDimension() == 2 && v1.getDimension() == 2) {
+            if (v1.getDimension() == 2 && v2.getDimension() == 2) {
                 return v1.cross2D(v2);
             }
             
-            else if (v1.getDimension() == 3 && v1.getDimension() == 3) {
+            else if (v1.getDimension() == 3 && v2.getDimension() == 3) {
                 return v1.cross3D(v2);
             }
             
@@ -167,7 +168,7 @@ public class Evaluator {
     }
     
     private static Object project(List<Object> args) {
-        if (args.get(0) instanceof Vector v1 && args.get(0) instanceof Vector v2) {
+        if (args.get(0) instanceof Vector v1 && args.get(1) instanceof Vector v2) {
             if (args.size() != 2) {
                 throw new CommandException("Invalid argument, amount not compatible");
             }
@@ -184,32 +185,34 @@ public class Evaluator {
     }
     
     private static Object vector(List<Object> args) {
-        if (args.size() != 1)  {
-            throw new CommandException("Invalid argument, amount not compatible");
-        }
-        
-        if (args.get(0) instanceof Integer n) {
-            return new Vector(n);
-        } else if (args.get(0) instanceof Vector v) {
-            return new Vector(v);
-        }
-        
-        throw new CommandException("Invalid argument for function");
+        expectArgs("vector", args, 1);
+        return new Vector(toSize(args.get(0)));
     }
-    
+
     private static Object matrix(List<Object> args) {
-        if (args.size() > 2 && args.size() < 1)  {
-            throw new CommandException("Invalid argument, amount not compatible");
-        }
-        
-        if (args.get(0) instanceof Integer n && args.get(1) instanceof Integer m) {
-            return new Matrix(n, m);
-        } else if (args.get(0) instanceof Matrix m) {
-            return new Matrix(m);
-        }
-        
-        throw new CommandException("Invalid argument for function");
+        expectArgs("matrix", args, 2);
+        return new Matrix(toSize(args.get(0)), toSize(args.get(1)));
     }
+
+        private static int toSize(Object o) {
+        if (o instanceof Double d && d == Math.floor(d) && d > 0) {
+            return d.intValue();
+        }
+        throw new CommandException("Sizes must be whole positive numbers");
+    }
+        
+    private static void expectArgs(String fn, List<Object> args, int n) {
+        if (args.size() != n) {
+            throw new CommandException(fn + " needs " + n + " argument(s)");
+        }
+    }    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -223,7 +226,7 @@ public class Evaluator {
         }
         
         if (o1 instanceof Double x && o2 instanceof Double y) {
-            return x - y;
+            return x + y;
         }
         
         throw new CommandException("Cannot add " + o1.getClass().getSimpleName() + " to " + o2.getClass().getSimpleName());
@@ -231,11 +234,11 @@ public class Evaluator {
     
     private static Object sub(Object o1, Object o2) {
         if (o1 instanceof Vector v1 && o2 instanceof Vector v2) {
-            return v1.add(v2);
+            return v1.subtract(v2);
         }
         
         if (o1 instanceof Matrix m1 && o2 instanceof Matrix m2) {
-            return m1.add(m2);
+            return m1.subtract(m2);
         }
         
         if (o1 instanceof Double x && o2 instanceof Double y) {
