@@ -1,0 +1,107 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 23 oct 2026, 3:15:01 p.m.
+    Author     : adria
+*/
+
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-background-color: #0F1913;
+}
+
+.top-bar {
+    -fx-background-color: #14271B;
+    -fx-padding: 16px 22px;
+    -fx-spacing: 12px;
+    -fx-alignment: center-left;
+    -fx-border-color: transparent transparent #2B4533 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.brand-title {
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #F0FDF4;
+}
+
+.muted-text {
+    -fx-text-fill: #A8B9AC;
+    -fx-font-size: 12px;
+}
+
+.io-panel,
+.matrix-card,
+.result-panel {
+    -fx-background-color: #1B3021;
+    -fx-background-radius: 12px;
+    -fx-border-color: #304C37;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 14px;
+}
+
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D9FBE3;
+}
+
+.button {
+    -fx-background-color: #2E8B57;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 9px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #38A866;
+}
+
+.button:pressed {
+    -fx-background-color: #216B41;
+}
+
+.text-field,
+.combo-box,
+.spinner {
+    -fx-background-color: #23392A;
+    -fx-background-radius: 7px;
+    -fx-border-color: #3B5B43;
+    -fx-border-radius: 7px;
+    -fx-text-fill: #F0FDF4;
+}
+
+.label {
+    -fx-text-fill: #E5F0E8;
+}
+
+.result-area {
+    -fx-control-inner-background: #14251A;
+    -fx-text-fill: #DDF7E4;
+    -fx-highlight-fill: #2E8B57;
+    -fx-highlight-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: #304C37;
+    -fx-border-radius: 8px;
+}
+
+.cartesian-pane {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 12px;
+    -fx-border-color: #D7E3DA;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+}
+
+
+.separator .line {
+    -fx-border-color: #304C37;
+    -fx-border-width: 1px 0 0 0;
+}

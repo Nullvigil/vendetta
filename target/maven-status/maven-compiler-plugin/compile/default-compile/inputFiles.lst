@@ -1,0 +1,16 @@
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/API/Matrix.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/API/Vector.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/API/elementalOperations.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/API/operable.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/App.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/CommandException.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/CompiledResult.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/Evaluator.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/Interpreter.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/Node.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/Parser.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/Token.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/Interpreter/Tokenizer.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/PrimaryController.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/linear/vendetta/vendetta/SecondaryController.java
+/home/ian/NetBeansProjects/vendetta/src/main/java/module-info.java
