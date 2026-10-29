@@ -119,81 +119,87 @@ public class Evaluator {
     
     
     
-    private static Object sum(Object o1, Object o2) { 
-        if (o1.getClass() != o1.getClass()) {
-            throw new CommandException("Invalid types for sum");
-        }
-        
-        if (o1 instanceof Vector) {
-            Vector v1 = (Vector) o1;
-            Vector v2 = (Vector) o2;
-            
+    private static Object sum(Object o1, Object o2) {
+        if (o1 instanceof Vector v1 && o2 instanceof Vector v2) {
             return v1.add(v2);
         }
         
-        if (o1 instanceof Matrix) {
-            Matrix v1 = (Matrix) o1;
-            Matrix v2 = (Matrix) o2;
-            
-            return v1.add(v2);
+        if (o1 instanceof Matrix m1 && o2 instanceof Matrix m2) {
+            return m1.add(m2);
         }
         
-        if (o1 instanceof Double) {
-            return (Double) o1 + (Double) o1;
+        if (o1 instanceof Double x && o2 instanceof Double y) {
+            return x - y;
         }
         
-        return null;
+        throw new CommandException("Cannot add " + o1.getClass().getSimpleName() + " to " + o2.getClass().getSimpleName());
     }
     
     private static Object sub(Object o1, Object o2) {
-        if (o1.getClass() != o1.getClass()) {
-            throw new CommandException("Invalid types for sum");
+        if (o1 instanceof Vector v1 && o2 instanceof Vector v2) {
+            return v1.add(v2);
         }
         
-        if (o1 instanceof Vector) {
-            Vector v1 = (Vector) o1;
-            Vector v2 = (Vector) o2;
-            
-            return v1.subtract(v2);
+        if (o1 instanceof Matrix m1 && o2 instanceof Matrix m2) {
+            return m1.add(m2);
         }
         
-        if (o1 instanceof Matrix) {
-            Matrix v1 = (Matrix) o1;
-            Matrix v2 = (Matrix) o2;
-            
-            return v1.subtract(v2);
+        if (o1 instanceof Double x && o2 instanceof Double y) {
+            return x - y;
         }
         
-        if (o1 instanceof Double) {
-            return (Double) o1 - (Double) o1;
-        }
-        
-        return null;
+        throw new CommandException("Cannot subtract " + o2.getClass().getSimpleName() + " from " + o1.getClass().getSimpleName());
     }
     
     private static Object times(Object o1, Object o2) {
-        if (o1 instanceof Vector && o2 instanceof Vector) {
-            Vector v1 = (Vector) o1;
-            Vector v2 = (Vector) o2;
-            
+        if (o1 instanceof Double x && o2 instanceof Double y) {
+            return x * y;
+        }
+        
+        if (o1 instanceof Double x) {
+            return scale(o2, x);                
+        }
+        
+        if (o2 instanceof Double y) {
+            return scale(o1, y);                
+        }
+        
+        if (o1 instanceof Vector v1 && o2 instanceof Vector v2) {
             return v1.dotProduct(v2);
         }
         
-        if (o1 instanceof Matrix && o2 instanceof Matrix) {
-            Matrix v1 = (Matrix) o1;
-            Matrix v2 = (Matrix) o2;
-            
-            return v1.multiply(v2);
+        if (o1 instanceof Matrix m1 && o2 instanceof Matrix m2) {
+            return m1.multiply(m2);
         }
-        
-        if (o1 instanceof Double && o2 instanceof Double) {
-            return (Double) o1 * (Double) o2;
-        }
-     
-        return null;
+             
+        throw new CommandException("Cannot multiply " + o1.getClass().getSimpleName() + " by " + o2.getClass().getSimpleName());
     }
     
     private static Object div(Object o1, Object o2) {
+        if (o1 instanceof Double x && o2 instanceof Double y) {
+        return x / y;
+        }
         
+        if (o2 instanceof Double x) {
+            return scale(o1, 1 / x);                
+        }
+        
+        if (o1 instanceof Matrix m1 && o2 instanceof Matrix m2) {
+            return m1.multiply(Matrix.inverse(m2));
+        }
+     
+        throw new CommandException("Cannot divide " + o1.getClass().getSimpleName() + " by " + o2.getClass().getSimpleName());
+    }
+    
+    private static Object scale(Object o, double k) {
+        if (o instanceof Matrix m) {
+            return m.scalarMult(k);
+        }
+        
+        if (o instanceof Vector v) {
+            return v.scalarMult(k);
+        }
+        
+        throw new CommandException("Expected a matrix or a vector");
     }
 }
