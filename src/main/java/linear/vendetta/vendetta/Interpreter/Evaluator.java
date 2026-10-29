@@ -76,6 +76,8 @@ public class Evaluator {
             case "inv" -> inv(args);
             case "trans" -> trans(args);
             case "det" -> det(args);
+            case "dot" -> dot(args);
+            case "cross" -> cross(args);    
             case "project" -> project(args);
             case "solveSystem" -> solveSystem(args);
             case "Vector" -> vector(args);
@@ -86,23 +88,86 @@ public class Evaluator {
     }    
     
     private static Object adj(List<Object> args) {
-    
+        if (args.get(0) instanceof Matrix m) {
+            if (args.size() != 1) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+        }
+        
+        throw new CommandException("Invalid argument for function");
     }
     
     private static Object inv(List<Object> args) {
-    
+        if (args.get(0) instanceof Matrix m) {
+            if (args.size() != 1) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+            return Matrix.inverse(m);
+        }
+        
+        throw new CommandException("Invalid argument for function");
     }
 
     private static Object trans(List<Object> args) {
-    
+        if (args.get(0) instanceof Matrix m) {
+            if (args.size() != 1) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+            return m.transpose();
+        }
+        
+        throw new CommandException("Invalid argument for function");
     }
     
     private static Object det(List<Object> args) {
+        if (args.get(0) instanceof Matrix m) {
+            if (args.size() != 1) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+            return m.getDeterminant();
+        }
+        
+        throw new CommandException("Invalid argument for function");
+    }
     
+    private static Object dot(List<Object> args) {
+        if (args.get(0) instanceof Vector v1 && args.get(0) instanceof Vector v2) {
+            if (args.size() != 2) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+            return v1.dotProduct(v2);
+        }
+        
+        throw new CommandException("Invalid argument for function");
+    }
+    
+    private static Object cross(List<Object> args) {
+        if (args.get(0) instanceof Vector v1 && args.get(0) instanceof Vector v2) {
+            if (args.size() != 2) {
+                throw new CommandException("Invalid argument, amount not compatible");
+            }
+            
+            if (v1.getDimension() == 2 && v1.getDimension() == 2) {
+                return v1.cross2D(v2);
+            }
+            
+            else if (v1.getDimension() == 3 && v1.getDimension() == 3) {
+                return v1.cross3D(v2);
+            }
+            
+            throw new CommandException("Invalid vector dimension");
+        }
+        
+        throw new CommandException("Invalid argument for function");
     }
     
     private static Object project(List<Object> args) {
-    
+        
     }
     
     private static Object solveSystem(List<Object> args) {
