@@ -17,22 +17,28 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+
+        // Load the main interface
+        FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("primary.fxml")
+        );
+
+        Parent root = loader.load();
+
+        // Create the scene
+        Scene scene = new Scene(root);
+
+        // Configure the main window
+        stage.setTitle("Vendetta - Linear Algebra Workbench");
         stage.setScene(scene);
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
+
+        // Display the application
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
-}
+} 
