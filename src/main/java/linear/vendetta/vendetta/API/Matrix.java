@@ -31,6 +31,28 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         }
     }
     
+    //Ian's stuff - pushed by Matthew
+    public Matrix(int n, int m) {
+        if (n <= 0 || m <= 0) {
+            throw new IllegalArgumentException("A matrix needs at least 1 row and 1 column");
+        }
+
+        this.rows = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            this.rows.add(new Vector(m));        
+        }
+
+        this.size = new int[]{n, m};
+        calcDeterminant();
+    }
+    
+    public Matrix(Matrix m) {
+        this.rows = m.rows;
+        this.size = m.size;
+        this.determinant = m.determinant;
+    }
+    
+    
     public static Matrix inverse() {
         /*
         Vector vector = new Vector(1);
