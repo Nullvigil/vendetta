@@ -4,6 +4,7 @@
  */
 package linear.vendetta.vendetta.Interpreter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import linear.vendetta.vendetta.API.Matrix;
@@ -61,51 +62,58 @@ public class Evaluator {
             default -> throw new IllegalStateException("Unexpected value: " + (node.text()));
         };
     }
+    
     //"Adj","Inv","Trans","Det","Dot", "Cross", "Project", "SolveSystem", "Vector", "Matrix"
     private static Object call(Node node) {
+        List<Object> args = new ArrayList<>();
+        
+        for (Node child : node.children()) {
+            args.add(evaluateNode(child));
+        }
+        
         return switch(node.text()) {
-            case "adj" -> adj(node.children());
-            case "inv" -> inv(node.children());
-            case "trans" -> trans(node.children());
-            case "det" -> det(node.children());
-            case "project" -> project(node.children());
-            case "solveSystem" -> solveSystem(node.children());
-            case "Vector" -> vector(node.children());
-            case "Matrix" -> matrix(node.children());    
+            case "adj" -> adj(args);
+            case "inv" -> inv(args);
+            case "trans" -> trans(args);
+            case "det" -> det(args);
+            case "project" -> project(args);
+            case "solveSystem" -> solveSystem(args);
+            case "Vector" -> vector(args);
+            case "Matrix" -> matrix(args);    
                 
             default -> throw new IllegalStateException("Unexpected value: " + (node.text()));
         };
     }    
     
-    private static Object adj(List<Node> arg) {
+    private static Object adj(List<Object> args) {
     
     }
     
-    private static Object inv(List<Node> arg) {
+    private static Object inv(List<Object> args) {
     
     }
 
-    private static Object trans(List<Node> arg) {
+    private static Object trans(List<Object> args) {
     
     }
     
-    private static Object det(List<Node> arg) {
+    private static Object det(List<Object> args) {
     
     }
     
-    private static Object project(List<Node> arg) {
+    private static Object project(List<Object> args) {
     
     }
     
-    private static Object solveSystem(List<Node> arg) {
+    private static Object solveSystem(List<Object> args) {
     
     }
     
-    private static Object vector(List<Node> arg) {
+    private static Object vector(List<Object> args) {
     
     }
     
-    private static Object matrix(List<Node> arg) {
+    private static Object matrix(List<Object> args) {
     
     }
     
