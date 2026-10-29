@@ -4,8 +4,10 @@
  */
 package linear.vendetta.vendetta.Interpreter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -13,6 +15,21 @@ import java.util.HashMap;
  */
 public class Interpreter {
     private static HashMap<String, Object> memory = new HashMap();
+    
+    public static List<CompiledResult> compile(List<String> commands) {
+        List<CompiledResult> results = new ArrayList<CompiledResult>();
+        for (String command: commands) {
+            Tokenizer tokenizedCommand = new Tokenizer(command);
+            
+            Parser parser = new Parser(tokenizedCommand.getTokens());
+            
+            Node commandTree = parser.parse();
+            
+            results.add(new CompiledResult(command, Evaluator.evaluateNode(commandTree)));
+        }    
+        
+        return results;
+    }
     
     public static void assignToMemory(String name, Object obj) {
         memory.put(name, obj);
