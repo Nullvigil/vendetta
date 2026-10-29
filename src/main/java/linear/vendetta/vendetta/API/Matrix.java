@@ -53,7 +53,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     }
     
     
-    public static Matrix inverse() {
+    public static Matrix inverse(Matrix m) {
         /*
         Vector vector = new Vector(1);
         this.rows.add(vector);  //TODO: Content
@@ -98,7 +98,7 @@ public class Matrix implements operable<Matrix>, elementalOperations {
         return build(equations);
     }
     
-    public static Matrix adj() {
+    public static Matrix adj(Matrix m) {
         List<Vector> equations = new ArrayList<>();
         
         return build(equations);
@@ -198,6 +198,9 @@ public class Matrix implements operable<Matrix>, elementalOperations {
     public int getNumCols() { return size[1]; }
  
     public double get(int row, int col) { return vectorValues(rows.get(row)).get(col); }
+    public double getDeterminant() {
+        return determinant;
+    }
  
  
     /**
