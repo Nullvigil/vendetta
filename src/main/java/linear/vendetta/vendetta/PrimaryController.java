@@ -80,7 +80,7 @@ public class PrimaryController {
     }
     
     @FXML
-    public void clearButtonPressed() {
+    private void clearButtonPressed() {
         clearTextFields(matrixAContainer);
         clearTextFields(matrixBContainer);
         
