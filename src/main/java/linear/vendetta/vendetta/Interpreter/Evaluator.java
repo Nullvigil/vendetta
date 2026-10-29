@@ -146,11 +146,51 @@ public class Evaluator {
     }
     
     private static Object sub(Object o1, Object o2) {
+        if (o1.getClass() != o1.getClass()) {
+            throw new CommandException("Invalid types for sum");
+        }
         
+        if (o1 instanceof Vector) {
+            Vector v1 = (Vector) o1;
+            Vector v2 = (Vector) o2;
+            
+            return v1.subtract(v2);
+        }
+        
+        if (o1 instanceof Matrix) {
+            Matrix v1 = (Matrix) o1;
+            Matrix v2 = (Matrix) o2;
+            
+            return v1.subtract(v2);
+        }
+        
+        if (o1 instanceof Double) {
+            return (Double) o1 - (Double) o1;
+        }
+        
+        return null;
     }
     
     private static Object times(Object o1, Object o2) {
+        if (o1 instanceof Vector && o2 instanceof Vector) {
+            Vector v1 = (Vector) o1;
+            Vector v2 = (Vector) o2;
+            
+            return v1.dotProduct(v2);
+        }
         
+        if (o1 instanceof Matrix && o2 instanceof Matrix) {
+            Matrix v1 = (Matrix) o1;
+            Matrix v2 = (Matrix) o2;
+            
+            return v1.multiply(v2);
+        }
+        
+        if (o1 instanceof Double && o2 instanceof Double) {
+            return (Double) o1 * (Double) o2;
+        }
+     
+        return null;
     }
     
     private static Object div(Object o1, Object o2) {
